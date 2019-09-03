@@ -3,7 +3,7 @@ import JSONbig from 'json-bigint'
 
 // 创建一个axios的实例，设置不同的baseURL
 const instance = axios.create({
-  timeout: 1000,
+  timeout: 5000,
   baseURL: 'http://ttapi.research.itcast.cn'
 })
 
@@ -30,7 +30,7 @@ instance.interceptors.request.use(function (config) {
 
 // Add a response interceptor
 instance.interceptors.response.use(function (response) {
-  console.log(response)
+//   console.log(response)
   // Do something with response data
   return response
 }, function (error) {
