@@ -1,6 +1,6 @@
 <template>
   <div>
-      <router-vie></router-vie>
+      <router-view></router-view>
       <van-tabbar route>
           <van-tabbar-item to="/" icon="home-o">首页</van-tabbar-item>
           <van-tabbar-item to="/qa" icon="search">问答</van-tabbar-item>
