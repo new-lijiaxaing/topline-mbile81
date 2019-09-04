@@ -1,14 +1,14 @@
 <template>
   <div>
-      <!-- 导航头 -->
-      <van-nav-bar title="登录"/>
-      <!-- 输入框 -->
-      <van-cell-group>
-          <!-- 使用VeeValidate
+    <!-- 导航头 -->
+    <van-nav-bar title="登录" />
+    <!-- 输入框 -->
+    <van-cell-group>
+      <!-- 使用VeeValidate
         1. 通过v-validate 设置验证的规则
         2. 设置文本框的name属性
         3. 展示验证错误信息
-       -->
+      -->
       <van-field
         v-validate="'required|digits:11'"
         name="mobile"
@@ -16,18 +16,20 @@
         clearable
         v-model="user.mobile"
         left-icon="phone-o"
-        placeholder="请输入手机号码" />
-    <van-field
+        placeholder="请输入手机号码"
+      />
+      <van-field
         v-validate="'required|digits:6'"
         name="code"
         :error-message="errors.first('code')"
         v-model="user.code"
         left-icon="star-o"
-        placeholder="请输入验证码">
+        placeholder="请输入验证码"
+      >
         <van-button slot="button" type="default" size="small">获取验证码</van-button>
-    </van-field>
-      </van-cell-group>
-      <!-- 登录按钮 -->
+      </van-field>
+    </van-cell-group>
+    <!-- 登录按钮 -->
     <div class="login-btn">
       <van-button class="btn" type="info" @click="handleLogin">登录</van-button>
     </div>
@@ -71,24 +73,26 @@ export default {
     //   点击按钮，处理登录
     async handleLogin () {
       try {
-        // data 就是接口返回数据中的data（因为响应拦截器做了处理）
-        // token refresh_token
-        const data = await login(this.user)
-        // 存储登录的状态
-        // 1. vuex
-        // 2. 本地存储
-        // --- 以上两件事都在store中完成
-        // this.$store.commit('setUser',data)
-        this.setUser(data)
-        // 跳转到首页
-        this.$router.push('/')
-        this.$toast.success('登陆成功')
+        // 表单验证
+        this.$validator.validate().then(async valid => {
+          // 验证失败
+          if (!valid) {
+            // do stuff if not valid.
+            return
+          }
+          // 验证成功
+          const data = await login(this.user)
+          // 存储登录的状态
+          this.setUser(data)
+          // 跳转到首页
+          this.$router.push('/')
+          this.$toast.success('登录成功')
+        })
       } catch (err) {
         this.$toast.fail('登陆失败')
       }
     }
   }
-
 }
 </script>
 
@@ -96,8 +100,7 @@ export default {
 .login-btn {
   padding: 20px;
   .btn {
-    width: 100%;
+    width: 100%
   }
 }
-
 </style>
