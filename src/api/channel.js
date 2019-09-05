@@ -1,22 +1,10 @@
 import request from '@/utils/request'
 
 /**
- * 获取文章列表（登录和不登录）
- * @param {*} 参数 channel_id,timestamp,with_top
+ * 获取频道列表
+ * 1. 用户登录，获取登录用户保存的频道列表
+ * 2. 用户没有登录，获取默认的频道列表
  */
-export const getArticles = ({
-  // 频道的id
-  channelId,
-  // 时间戳
-  timestamp,
-  // 是否包含置顶1，0不包含
-  withTop
-}) => {
-  return request.get('/app/v1_1/articles', {
-    params: {
-      channelId,
-      timestamp,
-      withTop
-    }
-  })
+export const getDefaultOrUserChannels = () => {
+  return request.get('/app/v1_0/user/channels')
 }
