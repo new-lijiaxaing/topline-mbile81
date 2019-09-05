@@ -10,7 +10,7 @@
         <van-list v-model="currentChannel.loading" :finished="currentChannel.finished" finished-text="没有更多了" @load="onLoad">
           <van-cell
             v-for="article in currentChannel.articles"
-            :key="article.art_id"
+            :key="article.art_id.toString()"
             :title="article.title"
           />
         </van-list>
@@ -27,9 +27,9 @@ export default {
   data () {
     return {
       // 列表用的数据
-      list: [],
-      loading: false,
-      finished: false,
+      // list: [],
+      // loading: false,
+      // finished: false,
       // 频道列表
       channels: [],
       // tab是组件中默认显示的tab项的索引
