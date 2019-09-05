@@ -154,7 +154,7 @@ export default {
           // 频道的id
           channelId: this.currentChannel.id,
           // 时间戳
-          timestamp: Date.new(),
+          timestamp: Date.now(),
           // 是否包含置顶1,0不包含
           withTop: 1
         })
