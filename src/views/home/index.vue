@@ -3,7 +3,7 @@
     <!-- 导航头 -->
     <van-nav-bar title="嘿嘿嘿" fixed />
     <!-- 频道列表 -->
-    <van-tabs animated>
+    <van-tabs animated v-model="activeIndex">
       <!-- 遍历标签页，显示频道列表 -->
      <van-tab
         v-for="channel in channels"
@@ -29,7 +29,10 @@ export default {
       loading: false,
       finished: false,
       // 频道列表
-      channels: []
+      channels: [],
+      // tab是组件中默认显示的tab项的索引
+      // 通过该index，可以找到当前的频道对象
+      activeIndex: 0
     }
   },
   created () {
