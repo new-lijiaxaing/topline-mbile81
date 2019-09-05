@@ -8,6 +8,10 @@ import './styles/index.less'
 import VeeValidate, { Validator } from 'vee-validate'
 // 导入VeeValiidate的中文包
 import zhCN from 'vee-validate/dist/locale/zh_CN'
+import { fmtDate } from '@/utils/dayjs'
+
+// 获取相对时间的过滤器
+Vue.filter('fmtDate', fmtDate)
 // 配置插件VeeValidate
 Vue.use(VeeValidate, {
   // 文本框中触发验证的事件，默认是input
