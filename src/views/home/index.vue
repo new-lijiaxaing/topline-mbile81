@@ -1,13 +1,23 @@
 <template>
   <div>
     <!-- 导航头 -->
-    <van-nav-bar title="嘿嘿嘿" fixed />
+    <van-nav-bar
+      fixed
+      title="黑马头条"
+    />
     <!-- 频道列表 -->
     <van-tabs animated v-model="activeIndex">
       <!-- 遍历标签页，显示频道列表 -->
-      <van-tab v-for="channel in channels" :title="channel.name" :key="channel.id">
-       <!-- 下拉加载更多组件 -->
-        <van-pull-refresh :success-text="successText" v-model="currentChannel.pullLoading" @refresh="onRefresh">
+      <van-tab
+        v-for="channel in channels"
+        :title="channel.name"
+        :key="channel.id">
+
+        <!-- 下拉加载更多组件 -->
+        <van-pull-refresh
+          :success-text="successText"
+          v-model="currentChannel.pullLoading"
+          @refresh="onRefresh">
           <!-- 文章列表,不同的标签页下有不同的列表 -->
           <van-list
             v-model="currentChannel.loading"
@@ -20,13 +30,16 @@
               :key="article.art_id.toString()"
               :title="article.title"
             >
-            <div slot="label">
+              <div slot="label">
                 <!-- grid 显示封面
                   article.cover.type   0 没有图片   1 1个图片 3 3个图片
                  -->
-                 <van-grid v-if="article.cover.type" :border="false" :column-num="3">
-                   <van-grid-item v-for="(img,index) in article.cover.images" :key="img + index">
-                     <van-image lazy-load height="80" :src="img" >
+                <van-grid v-if="article.cover.type" :border="false" :column-num="3">
+                  <van-grid-item
+                    v-for="(img, index) in article.cover.images"
+                    :key="img + index"
+                  >
+                    <van-image lazy-load height="80" :src="img" >
                       <!-- 图片的加载提示 -->
                       <template v-slot:loading>
                         <van-loading type="spinner" size="20" />
@@ -34,28 +47,33 @@
                       <!-- 自定义加载失败提示 -->
                       <template v-slot:error>加载失败</template>
                     </van-image>
-                   </van-grid-item>
-                 </van-grid>
-                 <p>
+                  </van-grid-item>
+                </van-grid>
+                <p>
                   <span>{{ article.aut_name }}</span>&nbsp;
                   <span>{{ article.comm_count }}评论</span>&nbsp;
                   <span>{{ article.pubdate | fmtDate }}</span>&nbsp;
-
-                  <van-icon name="cross" class="close" @click="showMoreAction=true" />
+                  <!-- 点击x按钮，记录当前的文章对象 -->
+                  <van-icon name="cross" class="close" @click="handleAction(article)" />
                 </p>
-            </div>
+              </div>
             </van-cell>
           </van-list>
         </van-pull-refresh>
       </van-tab>
     </van-tabs>
     <!-- 弹出层组件-moreAction -->
-     <!--
+    <!--
       v-model 等价于
       v-bind:value="showMoreAction"
       v-on:input="showMoreAction = $event"
      -->
-    <more-action v-model="showMoreAction"></more-action>
+     <!-- 如果article的值为null 不显示more-action -->
+    <more-action
+      v-if="currentArticle"
+      @handleSuccess="handleSuccess"
+      :article="currentArticle"
+      v-model="showMoreAction"></more-action>
   </div>
 </template>
 
@@ -68,6 +86,7 @@ import { Lazyload } from 'vant'
 import MoreAction from './components/MoreAction'
 // options 为可选参数，无则不传
 Vue.use(Lazyload)
+
 export default {
   name: 'Home',
   components: {
@@ -75,7 +94,7 @@ export default {
   },
   data () {
     return {
-      // 列表用的数据
+      // // 列表用的数据
       // list: [],
       // loading: false,
       // finished: false,
@@ -86,7 +105,9 @@ export default {
       activeIndex: 0,
       // 下拉更新完毕之后显示，成功的提示
       successText: '',
-      showMoreAction: false
+      showMoreAction: false,
+      // 点击x的时候，记录的当前文章对象
+      currentArticle: null
     }
   },
   created () {
@@ -104,8 +125,9 @@ export default {
     async loadChannels () {
       try {
         const data = await getDefaultOrUserChannels()
+        // console.log(data)
         // 给所有的频道设置，时间戳和文章数组
-        data.channels.forEach(channel => {
+        data.channels.forEach((channel) => {
           channel.timestamp = null
           channel.articles = []
           // 上拉加载
@@ -134,6 +156,7 @@ export default {
         // 是否包含置顶1，0不包含
         withTop: 1
       })
+
       // 记录文章列表，记录最后一条数据的时间戳
       this.currentChannel.timestamp = data.pre_timestamp
       // [[], []]
@@ -155,17 +178,38 @@ export default {
           channelId: this.currentChannel.id,
           // 时间戳
           timestamp: Date.now(),
-          // 是否包含置顶1,0不包含
+          // 是否包含置顶1，0不包含
           withTop: 1
         })
+
         // 设置加载完毕
         this.currentChannel.pullLoading = false
-        // 把数据放到数组的最前面(最新数据)
+        // 把数据放到数组的最前面（最新数据）
         this.currentChannel.articles.unshift(...data.results)
         this.successText = `加载了${data.results.length}条数据`
       } catch (err) {
         console.log(err)
       }
+    },
+    // 点击x按钮，弹出MoreAction，并且记录对应的文章对象
+    handleAction (article) {
+      this.showMoreAction = true
+      this.currentArticle = article
+    },
+    // more-action中操作成功执行的方法
+    handleSuccess () {
+      // 隐藏
+      this.showMoreAction = false
+      // 去掉当前的文章数据
+      // this.currentArticle
+      // 找到当前文章在数组中的索引
+      // findIndex() 查找第一个满足条件的元素的索引
+      const articles = this.currentChannel.articles
+      const index = articles.findIndex((article) => {
+        return article.art_id === this.currentArticle.art_id
+      })
+      // 删除指定位置的元素
+      articles.splice(index, 1)
     }
   }
 }
@@ -174,9 +218,14 @@ export default {
 <style lang="less" scoped>
 // 在scoped中书写的样式，动态生成的标签或者子组件中不可用
 // 深度作用选择器   /deep/
-// .van-tabs /deep/ .van-tabs__content
+// .van-tabs /deep/ .van-tabs__content {
 //   margin-top: 46px;
 //   margin-bottom: 50px;
+// }
+// .van-tabs {
+//   margin-top: 46px;
+//   margin-bottom: 50px;
+// }
 
 .van-tabs {
   /deep/ .van-tabs__wrap {
