@@ -1,10 +1,11 @@
 <template>
   <div>
     <!-- 导航头 -->
-    <van-nav-bar title="嘿嘿嘿" />
+    <van-nav-bar title="嘿嘿嘿" fixed />
     <!-- 频道列表 -->
     <van-tabs animated>
-      <van-tab v-for="index in 8" :title="'标签' + index" :key="index">
+      <!-- 遍历标签页，显示频道列表 -->
+      <van-tab v-for="channel in channels" :title="channel.name" :key="channel.id">
         <!-- 文章列表,不同的标签页下有不同的列表 -->
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
           <van-cell v-for="item in list" :key="item" :title="item" />
@@ -15,17 +16,34 @@
 </template>
 
 <script>
-import { setTimeout } from 'timers'
+import { getDefaultOrUserChannels } from '@/api/channel'
 export default {
   name: 'Home',
   data () {
     return {
+      // 列表用的数据
       list: [],
       loading: false,
-      finished: false
+      finished: false,
+      // 频道列表
+      channels: []
     }
   },
+  created () {
+    // 加载频道列表
+    this.loadChannels()
+  },
   methods: {
+    // 加载频道列表
+    async loadChannels () {
+      try {
+        const data = await getDefaultOrUserChannels()
+        this.channels = data.channels
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    // list组件的load
     onLoad () {
       // 异步更新数据
       setTimeout(() => {
