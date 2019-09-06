@@ -1,21 +1,26 @@
 <template>
-  <van-popup v-model="show" position="bottom" :style="{height: '80'}">
-      hello
-  </van-popup>
+  <van-popup
+    :value="value"
+    @input="$emit('input', $event)"
+    position="bottom"
+    :style="{height: '90%'}"
+  >hello</van-popup>
 </template>
 
 <script>
 export default {
   name: 'ChannelEdit',
-  data () {
-    return {
-      show: true
+  props: {
+    value: {
+      type: Boolean,
+      required: true
     }
+  },
+  data () {
+    return {}
   }
-
 }
 </script>
 
 <style>
-
 </style>
