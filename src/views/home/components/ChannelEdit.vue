@@ -8,11 +8,19 @@
   <van-cell icon="cross" @click="$emit('input', false)"/>
   <!-- 我的频道 -->
   <van-cell title="我的频道" label="点击进入频道">
-      <van-button round type="danget" size="mini">编辑</van-button>
+      <van-button round type="danget" size="mini" v-show="!isEdit" @click="isEdit=true">编辑</van-button>
+        <van-button
+        round
+        type="danger"
+        size="mini"
+        v-show="isEdit"
+        @click="isEdit=false"
+      >完成</van-button>
   </van-cell>
   <van-grid>
       <van-grid-item v-for="value in 8" :key="value" text="文字">
-          <van-icon slot="icon" class="close-icon" name="close"/>
+           <!-- 关闭按钮 -->
+          <van-icon slot="icon" class="close-icon" name="close" v-show="isEdit"/>
       </van-grid-item>
   </van-grid>
   <!-- 推荐频道 -->
@@ -33,7 +41,10 @@ export default {
     }
   },
   data () {
-    return {}
+    return {
+    // 是否是编辑模式
+      isEdit: false
+    }
   }
 }
 </script>
