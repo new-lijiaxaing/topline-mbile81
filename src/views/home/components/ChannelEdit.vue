@@ -26,7 +26,7 @@
   <!-- 推荐频道 -->
   <van-cell title="推荐频道" label="点击添加频道"/>
   <van-grid>
-      <van-grid-item v-for="value in 8" :key="value" text="文字"/>
+      <van-grid-item v-for="channel in channels" :key="channel.id" :text="channel.name"/>
   </van-grid>
   </van-popup>
 </template>
@@ -37,6 +37,10 @@ export default {
   props: {
     value: {
       type: Boolean,
+      required: true
+    },
+    channels: {
+      type: Array,
       required: true
     }
   },
