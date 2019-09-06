@@ -78,7 +78,7 @@
       :article="currentArticle"
       v-model="showMoreAction"></more-action>
       <!-- 弹出频道管理 -->
-    <channel-edit :channels="channels" v-model="showChannelEdit"></channel-edit>
+    <channel-edit :active="activeIndex" :channels="channels" v-model="showChannelEdit"></channel-edit>
   </div>
 </template>
 
