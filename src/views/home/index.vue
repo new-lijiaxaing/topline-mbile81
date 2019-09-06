@@ -3,12 +3,13 @@
     <!-- 导航头 -->
     <van-nav-bar
       fixed
-      title="黑马头条"
+      title="嘿嘿嘿"
     />
     <!-- 频道列表 -->
     <van-tabs animated v-model="activeIndex">
       <!-- 遍历标签页，显示频道列表 -->
       <van-tab
+        type="line"
         v-for="channel in channels"
         :title="channel.name"
         :key="channel.id">
@@ -232,6 +233,7 @@ export default {
     position: fixed;
     top: 46px;
     left: 0;
+    right: 10px;
     z-index: 100;
   }
   /deep/ .van-tabs__content {
