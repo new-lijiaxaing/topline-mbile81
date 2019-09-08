@@ -51,7 +51,7 @@ export default {
     return {
       list: [],
       loading: false,
-      finisged: false,
+      finished: false,
       page: 1,
       perPage: 10
     }
@@ -61,7 +61,7 @@ export default {
       try {
         const data = await getSearchResults({
           page: this.page,
-          per_page: this.per_page,
+          perPage: this.perPage,
           q: this.q
         })
         // 把获取的结果push到数组中
