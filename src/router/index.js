@@ -20,6 +20,13 @@ export default new Router({
       ]
     },
     {
+      path: '/search-result/:q',
+      name: 'search-result',
+      // 路由跳转的时候对，对应的组件把动态路由参数，传递给组件
+      props: true,
+      component: () => import(/* webpackChunkName: "search-result" */ '../views/SearchResult.vue')
+    },
+    {
       path: '/search',
       name: 'search',
       component: () => import(/* webpackChunkName: "search" */ '../views/Search.vue')
