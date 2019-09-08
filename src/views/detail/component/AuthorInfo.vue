@@ -30,6 +30,9 @@ export default {
   methods: {
     //   点击按钮，关注或者取消关注作者
     async handleFollow () {
+      if (!this.$checkLogin()) {
+        return
+      }
       this.loading = true
       // 判断是否登录
       try {
