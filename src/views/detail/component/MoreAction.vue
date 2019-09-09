@@ -2,7 +2,7 @@
   <div class="more-action">
     <!-- 用户对文章的态度, -1: 无态度，0-不喜欢，1-点赞 -->
     <van-button
-      :icon="article.attitude === 1 ? 'star' : 'star-o'"
+      :icon="article.attitude === 1 ? 'star' : 'star-o' "
       round
       :loading="false"
       type="danger"
@@ -21,7 +21,7 @@
 <script>
 import { likeArticle, unLikeArticle } from '@/api/article'
 export default {
-  propr: ['article'],
+  props: ['article'],
   methods: {
     // 点赞和取消点赞
     async handleLike () {
@@ -29,6 +29,7 @@ export default {
       if (!this.$checkLogin()) {
         return
       }
+
       // 点赞或者取消点赞
       try {
         // 用户对文章的态度, -1: 无态度，0-不喜欢，1-点赞
