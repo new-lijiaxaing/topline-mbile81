@@ -75,6 +75,7 @@ export default {
     //   点击按钮，处理登录
     async handleLogin () {
       this.loading = true
+
       try {
         // 表单验证
         const valid = await this.$validator.validate()
