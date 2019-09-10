@@ -22,6 +22,8 @@
       <!-- 发布评论 -->
       <send-comment :target="article.art_id.toString()"  :isArticle="true"></send-comment>
       <reply-list v-model="showReplyList"></reply-list>
+      <!-- 回复的评论列表 -->
+      <reply-list v-model="showReplyList" :art_id="id"></reply-list>
     </div>
   </div>
 </template>
@@ -40,6 +42,7 @@ import ReplyList from './component/ReplyList'
 import { mapState } from 'vuex'
 export default {
   name: 'Detail',
+  // 文章的id
   props: ['id'],
   components: {
     AuthorInfo,
