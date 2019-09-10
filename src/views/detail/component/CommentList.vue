@@ -11,11 +11,11 @@
               <van-button icon="like-o" size="mini" plain>赞</van-button>
           </div>
           <div slot="label">
-              <p>{{connent.content}}</p>
+              <p>{{comment.content}}</p>
               <p>
                   <span>{{comment.pubdate | fmtDate}}</span>
                   .
-                  <span @click=" handleShowReplyList">回复{{comment.reply_count}}</span>
+                  <span @click=" handleShowReplyList(comment)">回复{{comment.reply_count}}</span>
               </p>
           </div>
       </van-cell>
@@ -46,13 +46,14 @@ export default {
       // 获取评论列表
       try {
         const data = await getComments({
-          isArtcle: this.isArticle,
+          isArticle: this.isArticle,
           source: this.id,
           // 最后一条数据的id
           offset: this.offset,
           limit: this.limit
         })
         // 当前获取的最后一条数据的id存储
+        console.log(data)
         this.offset = data.last_id
         this.list.push(...data.results)
         this.loading = false
@@ -64,7 +65,7 @@ export default {
       }
     },
     // 点击回复按钮，显示回复评论的列表
-    handleShowReplyList () {
+    handleShowReplyList (comment) {
       this.$store.commit('setShowReplyList', true)
     }
   }
