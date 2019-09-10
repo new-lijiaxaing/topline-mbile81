@@ -21,6 +21,7 @@
       <comment-list  :isArticle="true" :id="article.art_id.toString()"></comment-list>
       <!-- 发布评论 -->
       <send-comment :target="article.art_id.toString()"  :isArticle="true"></send-comment>
+      <reply-list v-model="showReplyList"></reply-list>
     </div>
   </div>
 </template>
@@ -35,6 +36,8 @@ import MoreAction from './component/MoreAction'
 import CommentList from './component/CommentList'
 // 加载发布评论组件
 import SendComment from './component/SendComment'
+import ReplyList from './component/ReplyList'
+import { mapState } from 'vuex'
 export default {
   name: 'Detail',
   props: ['id'],
@@ -42,7 +45,11 @@ export default {
     AuthorInfo,
     MoreAction,
     CommentList,
-    SendComment
+    SendComment,
+    ReplyList
+  },
+  computed: {
+    ...mapState(['showReplyList'])
   },
   data () {
     return {

@@ -8,7 +8,9 @@ export default new Vuex.Store({
   state: {
     // { token: , refresh_token: }
     // 项目运行时,先去本地存储中获取登录状态
-    user: storageTools.getItem('user')
+    user: storageTools.getItem('user'),
+    // 控制评论的回复组件是否显示
+    showReplyList: false
 
   },
 
@@ -19,6 +21,9 @@ export default new Vuex.Store({
 
       // 把登录状态存储的·本地存储中
       storageTools.setItem('user', user)
+    },
+    setShowReplyList (state, isShow) {
+      state.showReplyList = isShow
     }
   },
   actions: {
